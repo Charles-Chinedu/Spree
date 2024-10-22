@@ -1,0 +1,137 @@
+﻿@page "/admin/manage-products"
+
+@rendermode InteractiveServer
+
+<PageTitle>Manage Blog Post</PageTitle>
+
+<AdminHeader Title="Manage Categories">
+    <ActionButtons>
+        <a href="admin/manage-products/new" class="btn btn-primary btn-sm" data-enhance-nav="false">+ Add New Product</a>
+    </ActionButtons>
+</AdminHeader>
+
+@if (isLoading is true)
+{
+    <LoadingPage LoadingText="@LoadingText" />
+}
+
+
+
+<QuickGrid Items="@products" Pagination="paginationState" class="table table-bordered table-striped table-hover">
+    <PropertyColumn Property="@(c => c.Id)" />
+        <TemplateColumn>
+            <div class="py-2" style="display:grid; grid-template-columns:60px auto; grid-column-gap:5px">
+                <img src="@context.ImageUrl" style="height:60px; width:60px; object-fit:cover"/>
+            </div>
+        </TemplateColumn>
+    <PropertyColumn Property="@(c => c.Name)" />
+    <PropertyColumn Property="@(c => c.Brand)" />
+    <TemplateColumn Title="Category">
+        @if (context.Category != null)
+        {
+            @context.Category.Name
+        }
+        else
+        {
+            <em>No Category</em>
+        }
+    </TemplateColumn>
+    <PropertyColumn Property="@(c => c.Description)" />
+    <PropertyColumn Property="@(c => c.Price)" />
+    <TemplateColumn Title="In Stock">
+        @if (context.InStock)
+        {
+            <label class="text-success">
+                <input type="checkbox" @onchange="@(() => HandleFeaturedChanged(context))" checked /> Yes
+            </label>
+        }
+        else
+        {
+            <label class="text-success">
+                <input type="checkbox" @onchange="@(() => HandleFeaturedChanged(context))" /> No
+            </label>
+        }
+    </TemplateColumn>
+    <TemplateColumn>
+        <a href="admin/manage-products/edit/@context.Id" class="btn btn-sm btn-primary" data-enhance-nav="false">Edit</a>
+        <button class="btn btn-sm btn-danger" @onclick="(async () => DeleteProductAsync(context.Id))" data-enhahnce-nav="false">Delete</button>
+    </TemplateColumn>
+</QuickGrid>
+<Paginator State="paginationState" />
+
+@code {
+    private bool isLoading;
+    private string? LoadingText;
+    private const int PageSize = 5;
+    private Category category = new();
+    private IQueryable<Product> products = Enumerable.Empty<Product>().AsQueryable();
+
+    private PaginationState paginationState = new PaginationState { ItemsPerPage = PageSize };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProductsAsync();
+        messageDialogService.Action += StateHasChanged;
+    }
+
+    private async Task LoadProductsAsync()
+    {
+        isLoading = true;
+        LoadingText = "Fetching Products";
+        await Task.Delay(2000);
+        products = (await productService.GetAllProductsAsync()).AsQueryable();
+        isLoading = false;
+    }
+
+    private async Task HandleFeaturedChanged(Product model)
+    {
+        model.InStock = !model.InStock;
+        await productService.EditProductAsync(model);
+    } 
+
+    private async void DeleteProductAsync(int id)
+    {
+        bool confirm = await js.InvokeAsync<bool>("confirm", "Are you sure you want to delete?");
+        if (confirm)
+        {
+            LoadingText = "Deleting Product";
+            isLoading = true;
+            var response = await productService.DeleteProductAsync(id);
+            isLoading = false;
+            HandleServiceResponse(response);
+            NavManager.NavigateTo("admin/manage-products");
+            await LoadProductsAsync();
+        }
+    }
+
+    private void HandleServiceResponse(ServiceResponse response)
+    {
+        if (response.Flag)
+        {
+            messageDialogService.messageDialog!.SetDialogValues("success", response.Message);
+        }
+        else
+        {
+            messageDialogService.messageDialog!.SetDialogValues("danger", response.Message);
+        }
+        messageDialogService.SetMessageDialog();
+    }
+
+    private async Task SaveChangesAsync(Product model)
+    {
+        if (model != null)
+        {
+
+            LoadingText = "Saving Changes";
+            isLoading = true;
+            await productService.AddProductAsync(model);
+            isLoading = false;
+            await LoadProductsAsync();
+        }
+    }
+
+    private void Dispose()
+    {
+        messageDialogService.Action -= StateHasChanged;
+    }
+}

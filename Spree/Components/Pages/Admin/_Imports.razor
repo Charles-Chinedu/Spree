@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.QuickGrid
+@layout AdminLayout
+
+@using Spree.Client.Pages.OtherPages
+@using Spree.Interface
+@using Spree.Library.Models
+
+@inject IAdminProductService productService
+@inject ICategoryService categoryService
+@inject IWebHostEnvironment webHostEnv
+@inject MessageDialogService messageDialog
+@inject HttpClient _httpClient
+

@@ -1,0 +1,33 @@
+﻿@page "/shop"
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+<section id="page-header">
+    <h2>#stayhome</h2>
+    <p>Save more with coupons & up to 70% off!</p>
+</section>
+
+<section id="all-products">
+    <div class="product-list">
+        @foreach (var product in products)
+        {
+            <div class="product-item">
+                <img src="@product.ImageUrl" width="auto" height="350px" style="cursor:pointer" />
+                <div class="description">
+                    <span class="fw-bold">@product.Brand</span>
+                    <div class="product-name fw-bold">@product.Name</div>
+                    <h4 class="product-price fw-bold">₦ @product.Price</h4>
+                </div>
+                <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
+            </div>
+        }
+    </div>
+</section>
+
+@code {
+    private List<Product> products = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await productService.GetAllProductsAsync(); 
+    }
+}

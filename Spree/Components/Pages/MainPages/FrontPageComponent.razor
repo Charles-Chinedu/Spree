@@ -1,0 +1,112 @@
+﻿<div class="container-fluid">
+    <section id="hero" class="section">
+        <div class="content">
+            <img src="images/hero4.png" alt="image" class="bg-image" />
+            <div class="container text-content">
+                <h4 class="fw-bold">Trade-in Offer</h4>
+                <h2 class="fw-bold">Super value deals</h2>
+                <h1 class="fw-bold">On all products</h1>
+                <p>Save more with coupons & up to 70% off!</p>
+                <button class="btn">Shop Now!</button>
+            </div>
+        </div>
+    </section>
+    <section id="features" class="container">
+        <div class="container fe-box">
+            <img src="images/features/f1.png" />
+            <h6>Free Shipping</h6>
+        </div>
+        <div class="container fe-box">
+            <img src="images/features/f2.png" />
+            <h6>Online Order</h6>
+        </div>
+        <div class="container fe-box">
+            <img src="images/features/f3.png" />
+            <h6>Save Money</h6>
+        </div>
+        <div class="container fe-box">
+            <img src="images/features/f4.png" />
+            <h6>Promotions</h6>
+        </div>
+        <div class="container fe-box">
+            <img src="images/features/f5.png" />
+            <h6>Happy Sell</h6>
+        </div>
+        <div class="container fe-box">
+            <img src="images/features/f6.png" />
+            <h6>24/7 Support</h6>
+        </div>
+    </section>
+    <section id="featured-products">
+        <div class="container">
+            <h2 class="fw-bold">Featured Products</h2>
+            <p>Summer Collection New Modern Design</p>
+            <div class="product-list">
+                @foreach (var product in featuredProducts.Take(5))
+                {
+                    <div class="product-item">
+                        <img src="@product.ImageUrl" width="auto" height="350px" style="cursor:pointer"/>
+                        <div class="description"> 
+                            <span class="fw-bold">@product.Brand</span>
+                            <div class="product-name fw-bold">@product.Name</div>
+                            <h4 class="product-price fw-bold">₦ @product.Price</h4>
+                        </div>
+                        <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+    <section id="banner" class="section-b1">
+        <h4 class="banner-header">Repair Services</h4>
+        <h2 class="fw-bold banner-text">Up to <span>70% Off</span> - All T-Shirts & Accessories</h2>
+        <button class="normal">Explore More</button>
+    </section>
+    <section id="sm-banner" class="section-p2 container">
+        <div class="banner-box">
+            <h4 class="banner-header">Crazy Deals</h4>
+            <h2 class="banner-title">Buy 1 Get 1 free</h2>
+            <span>The best classic dress is on sale at Cara</span>
+            <button class="white">Learn More</button>
+        </div>
+        <div class="banner-box banner-box-2">
+            <h4 class="banner-header">Spring/Summer</h4>
+            <h2 class="banner-title">Upcomming Season</h2>
+            <span>The best classic dress is on sale at Cara</span>
+            <button class="white">Collection</button>
+        </div>
+    </section>
+    <section id="banner-3" class="container">
+        <div class="banner-box">
+            <h2 class="banner-header">SEASONAL SALE</h2> 
+            <h3 class="banner-text">Winter Collection - 50% Off</h3>
+        </div>
+        <div class="banner-box banner-box-2">
+            <h2 class="banner-header">NEW FOOTWEAR COLLECTION</h2>
+            <h3 class="banner-text">Spring / Summmer 2022</h3>
+        </div>
+        <div class="banner-box banner-box-3">
+            <h2 class="banner-header">T-SHIRTS</h2>
+            <h3 class="banner-text">New Trendy Prints</h3>
+        </div>
+    </section>
+    <section id="newsletter">
+        <div class="newstext">
+            <h4 class="newsletter-header">Sign Up For Newsletters</h4>
+            <p class="text">Get E-mail updates about our latest shop and <span>special offers</span>.</p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your email address" />
+            <button class="normal">Sign up</button>
+        </div>
+    </section>
+</div>
+
+@code {
+    List<Product> featuredProducts = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        featuredProducts = await productService.GetAllProductsAsync();
+    }
+}

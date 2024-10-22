@@ -1,0 +1,44 @@
+﻿@media screen and (max-width: 1380px) {
+    .media-hide {
+        display: none;
+    }
+
+    .container-fluid {
+        position: relative;
+        top: 8rem;
+    }
+
+    .row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .col-6 img {
+        width: 100px; /* Adjust the image size */
+        height: auto; /* Keep the aspect ratio */
+        margin: 0 auto; /* Center the image */
+    }
+
+    .border-left-groove {
+        
+    }
+
+    .col-lg-6 {
+        text-align: center; /* Center the content vertically */
+        margin-top: 20px; /* Add some space between the image and form */
+    }
+
+    .border-right-groove, .border-left-groove {
+        border-right: none !important;
+        border-left: none !important;
+        width: 100%;
+    }
+}
+/*@media screen and (max-width: 1200px) {
+    .logo-image {
+        max-width: 300px;
+    }
+}*/
+

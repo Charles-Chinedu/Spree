@@ -1,0 +1,82 @@
+﻿<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid d-flex justify-content-between align-itemms-center">
+        <a class="navbar-brand me-auto" href="#"><img src="images/cara-logo.png" class="img-fluid" style="width:200px; padding-right:22px " alt="Logo" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-cart" style="cursor:pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" /></svg>
+        </a>
+        <div class="offcanvas offcanvas-end nav-scrollable" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body align-items-center ">
+                <ul class="navbar-nav justify-content-center flex-grow-1">
+                    <li class="nav-item">
+                        <NavLink class="nav-link mx-lg-2" href="/" Match="NavLinkMatch.All" ActiveClass="my-active-class">Home</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link mx-lg-2" href="/shop" Match="NavLinkMatch.All" ActiveClass="my-active-class">Shop</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link mx-lg-2" href="#" Match="NavLinkMatch.All" ActiveClass="my-active-class">Blog</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link mx-lg-2" href="#" Match="NavLinkMatch.All" ActiveClass="my-active-class">About</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link mx-lg-2" href="#" Match="NavLinkMatch.All" ActiveClass="my-active-class">Contact</NavLink>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <NavLink class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Account
+                        </NavLink>
+                        <ul class="dropdown-menu align-content-end">
+                            <AuthorizeView>
+                                <Authorized>
+                                    <li class="nav-item highlight">
+                                        <LogoutForm />
+                                    </li>
+                                </Authorized>
+                                <NotAuthorized>
+                                    <li>
+                                        <NavLink class="dropdown-item" href="register">
+                                            Register
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink class="dropdown-item" href="login">
+                                            Login
+                                        </NavLink>
+                                    </li>
+                                </NotAuthorized>
+                            </AuthorizeView>
+                        </ul>
+                    </li>
+                    <AuthorizeView Roles="Admin">
+                        <Authorized>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/admin/dashboard" Match="NavLinkMatch.All" ActiveClass="my-active-class">Hi, @context.User.Identity!.Name</NavLink>
+                            </li>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="User">
+                        <Authorized>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" Match="NavLinkMatch.All" ActiveClass="my-active-class">Hi, @context.User.Identity!.Name</NavLink>
+                            </li>
+                        </Authorized>
+                    </AuthorizeView>
+                </ul>
+                <form class="d-flex mt-3" role="search" id="search-bar">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <a class="search-icon m-3" type="submit" >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" /></svg>
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>

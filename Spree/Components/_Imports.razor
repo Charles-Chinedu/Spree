@@ -1,0 +1,31 @@
+﻿@using Spree.Components.Pages
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using Spree
+@using Spree.Client
+@using Spree.Client.Pages
+@using Spree.Client.Services
+@using Spree.Components
+@using Microsoft.AspNetCore.Components.Authorization
+
+@using Spree.Library.Response
+@using static Spree.Library.Response.CustomResponses
+@using Spree.Library.AuthState
+@using Spree.Client.Pages.OtherPages
+@using Spree.Components.Layout
+@using Spree.Components.Pages.OtherPages
+@using Spree.Components.Pages.MainPages
+@using Spree.Library.Models
+
+@inject IAccountService accountService
+@inject IProductService productService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime js
+@inject NavigationManager NavManager
+@inject MessageDialogService messageDialogService

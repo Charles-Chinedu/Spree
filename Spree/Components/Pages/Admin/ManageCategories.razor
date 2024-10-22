@@ -1,0 +1,225 @@
+﻿@page "/admin/manage-categories"
+@using System.Net.Http.Headers
+
+
+@rendermode InteractiveServer
+
+<PageTitle>Manage Blog Post</PageTitle>
+
+<AdminHeader Title="Manage Categories">
+    <ActionButtons>
+        <button type="button" class="btn btn-primary btn-sm" @onclick="() => model = new()">+ Add New Category</button>
+    </ActionButtons>
+</AdminHeader>
+
+@if (isLoading is true)
+{
+    <LoadingPage LoadingText="@LoadingText"/>
+}
+@if (model is not null)
+{
+    <div class="row">
+        <div class="col-sm-6"></div>
+        <div class="col-md-6">
+            <EditForm Model="model" OnValidSubmit="SaveCategoryAsync">
+                <DataAnnotationsValidator />
+                <div class="shadow p-3" style="display:grid; grid-template-columns:auto 150px; grid-column-gap:15px">
+                    <div>
+                        <label class="form-label">Add Category</label>
+                        <div class="form-group mt-3">
+                            <label class="form-label">Name</label>
+                            <InputText @bind-Value="model.Name" class="form-control form-control-sm" placeholder="Category Name" />
+                            <ValidationMessage For="() => model.Name" />
+                        </div>
+                        <div class="form-group mt-3">
+                            <label class="form-label d-block">Upload Image</label>
+                            <InputFile OnChange="HandleFileUploadAsync" />
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start gap-2 mt-2">
+                        <button type="submit" class="btn btn-sm btn-success" @onclick="() => SaveCategoryAsync()"><i class="fa fa-plus"></i>Save</button>
+                        <button type="button" class="btn btn-sm btn-danger" @onclick="() => model = null">Cancel</button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>   
+}
+
+<QuickGrid Items="@categories" Pagination="paginationState" class="table table-bordered table-striped table-hover">
+    <PropertyColumn Property="@(c => c.Id)" Sortable="true"/>
+        <TemplateColumn>
+             <div class="py-2" style="display: grid;grid-template-columns: 60px auto; grid-column-gap: 5px">
+                 <img src="@context.Image" style="height: 60px; width: 60px; object-fit: cover" />
+            </div>
+        </TemplateColumn>
+    <PropertyColumn Property="@(c => c.Name)"/>
+    <TemplateColumn>
+        <button class="btn btn-sm btn-primary" @onclick="(async () => EditCategoryAsync(context)) " data-enhance-nav="false">Edit</button>
+        <button class="btn btn-sm btn-danger" @onclick="(async () => DeleteCategoryAsync(context.Id))" data-enhahnce-nav="false">Delete</button>
+    </TemplateColumn>
+</QuickGrid>
+<Paginator State="paginationState"/>
+<MessageDialog @ref="messageDialogService.messageDialog"></MessageDialog>
+
+@code {
+    private bool isLoading;
+    private string? LoadingText;
+    private Category? model;
+    private IBrowserFile? fileUpload;
+    private string? imageUrlToDelete;
+    private string? errorMessage;
+    private IQueryable<Category> categories = Enumerable.Empty<Category>().AsQueryable();
+    private const int PageSize = 5;
+
+    private PaginationState paginationState = new PaginationState { ItemsPerPage = PageSize };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCatgeoriesAsync();
+        messageDialogService.Action += StateHasChanged;
+    }
+
+    private async Task LoadCatgeoriesAsync()
+    {
+        LoadingText = "Fetching categories";
+        isLoading = true;
+        await Task.Delay(1000);
+        categories = (await categoryService.GetAllCategoriesAsync()).AsQueryable();
+        isLoading = false;
+    }
+
+    private async Task PreviewImageAsync(IBrowserFile file)
+    {
+        // .png 
+        var extention = Path.GetExtension(file.Name)[1..];
+        using var stream = file.OpenReadStream(maxAllowedSize: 111048576);
+        using MemoryStream memoryStream = new();
+        await stream.CopyToAsync(memoryStream);
+    }
+
+    private async void HandleFileUploadAsync(InputFileChangeEventArgs e)
+    {
+        await PreviewImageAsync(e.File);
+        fileUpload = e.File;
+    }
+
+    private async Task<string> SaveFileToDiscAsync(IBrowserFile browserFile)
+    {
+        var randomFileName = Path.GetRandomFileName();
+        var extension = Path.GetExtension(browserFile.Name);
+
+        //it will give us this : ...../wwroot/images/posts
+        var folder = Path.Combine(webHostEnv.WebRootPath, "images", "posts");
+        Directory.CreateDirectory(folder);
+
+        var fileNamePath = Path.Combine("images", "posts", randomFileName + extension);
+
+        var fullPath = Path.Combine(webHostEnv.WebRootPath, fileNamePath);
+
+        await using FileStream fileStream = new FileStream(fullPath, FileMode.Create);
+
+        try
+        {
+            await browserFile.OpenReadStream(maxAllowedSize: 111048576).CopyToAsync(fileStream);
+
+            return fileNamePath.Replace("\\", "/");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            fileStream.Close();
+
+            //throw
+            return null!;
+        }
+    }
+
+    private void EditCategoryAsync(Category category) => model = category.Clone();
+
+    private async Task DeleteCategoryAsync(int id)
+    {
+        bool confirm = await js.InvokeAsync<bool>("confirm", "Are you sure you want to delete?");
+        if (confirm)
+        {
+            LoadingText = "Deleting Category";
+            isLoading = true;
+            var response = await categoryService.DeleteCategoryAsync(id);
+            isLoading = false;
+            HandleServiceResponse(response);
+            // NavManager.NavigateTo("admin/manage-categories", true);
+            await LoadCatgeoriesAsync();
+        }
+    }
+
+    private void DeleteExistingImage(string imageUrl)
+    {
+        var imagePath = imageUrl.Replace("/", "\\");
+        var fullPath = Path.Combine(webHostEnv.WebRootPath, imagePath);
+        try
+        {
+            File.Delete(fullPath);
+        }
+        catch { }
+    }
+
+    private void HandleServiceResponse(ServiceResponse response)
+    {
+        if (response.Flag)
+        {
+            messageDialogService.messageDialog!.SetDialogValues("success", response.Message);
+        }
+        else
+        {
+            messageDialogService.messageDialog!.SetDialogValues("danger", response.Message);
+        }
+        messageDialogService.SetMessageDialog();
+    }
+
+    private async Task SaveCategoryAsync()
+    {
+        if (fileUpload != null)
+        {
+            var uploadFileUrl = await SaveFileToDiscAsync(fileUpload);
+            if (uploadFileUrl is null)
+                return;
+            if (model!.Id > 0 && !string.IsNullOrWhiteSpace(model.Image))
+            {
+                imageUrlToDelete = model.Image; 
+            }
+            model.Image = uploadFileUrl;
+
+            fileUpload = null;
+            if (imageUrlToDelete is not null)
+            {
+                // We change the image for this existing product
+                // Let's remove the existing image from physical location
+                DeleteExistingImage(imageUrlToDelete);
+            }
+
+            LoadingText = "Saving Category";
+            isLoading = true;
+            if (model.Id == 0)
+            {
+                var response = await categoryService.AddCategory(model); 
+                HandleServiceResponse(response);
+            }
+            else
+            {
+                var response = await categoryService.EditCategory(model);
+                HandleServiceResponse(response);
+            }
+            // await Task.Delay(2000);
+            // NavManager.Refresh(forceReload: true);
+            isLoading = false;
+
+            await LoadCatgeoriesAsync();
+        }
+
+    }
+
+    private void Dispose()
+    {
+        messageDialogService.Action -= StateHasChanged;
+    }
+}
