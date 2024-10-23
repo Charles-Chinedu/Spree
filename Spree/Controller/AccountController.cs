@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Spree.Interface;
-using Spree.Library.DTOs;
-using Spree.Library.Response;
-using static Spree.Library.Response.CustomResponses;
+using Spree.Libraries.DTOs;
+using static Spree.Libraries.Response.CustomResponses;
 
 namespace Spree.Controller
 {

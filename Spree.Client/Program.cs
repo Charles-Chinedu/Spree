@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Spree.Client.Pages;
 using Spree.Client.Services;
-using Spree.Library;
+using Spree.Libraries;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddScoped<IProductService, ClientServices>()

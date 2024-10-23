@@ -1,6 +1,5 @@
-﻿using Spree.Library.DTOs;
-using Spree.Library.Response;
-using static Spree.Library.Response.CustomResponses;
+﻿using Spree.Libraries.DTOs;
+using static Spree.Libraries.Response.CustomResponses;
 
 namespace Spree.Interface
 {

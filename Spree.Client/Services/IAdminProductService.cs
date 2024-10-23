@@ -1,5 +1,5 @@
-﻿using Spree.Library.Models;
-using static Spree.Library.Response.CustomResponses;
+﻿using Spree.Libraries.Models;
+using static Spree.Libraries.Response.CustomResponses;
 
 namespace Spree.Client.Services
 {

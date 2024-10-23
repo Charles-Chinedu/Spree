@@ -1,4 +1,4 @@
-﻿using Spree.Library.Models;
+﻿using Spree.Libraries.Models;
 
 namespace Spree.Client.Services
 {

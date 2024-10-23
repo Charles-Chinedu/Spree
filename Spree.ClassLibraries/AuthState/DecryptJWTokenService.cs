@@ -1,8 +1,8 @@
-﻿using Spree.Library.Response;
+﻿using Spree.Libraries.Response;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Spree.Library.AuthState
+namespace Spree.Libraries.AuthState
 {
     public static class DecryptJWTokenService
     {

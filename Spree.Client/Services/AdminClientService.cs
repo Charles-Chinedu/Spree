@@ -1,10 +1,10 @@
-﻿using Spree.Library.AuthState;
-using Spree.Library.DTOs;
-using Spree.Library.Models;
+﻿using Spree.Libraries.AuthState;
+using Spree.Libraries.Models;
+using Spree.Libraries.DTOs;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using static Spree.Library.Response.CustomResponses;
+using static Spree.Libraries.Response.CustomResponses;
 
 namespace Spree.Client.Services
 {

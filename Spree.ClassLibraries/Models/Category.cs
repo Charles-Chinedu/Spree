@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Spree.Library.Models
+namespace Spree.Libraries.Models
 {
     public class Category
     {

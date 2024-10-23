@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Spree.Interface;
-using Spree.Library.Models;
+using Spree.Libraries.Models;
 
 namespace Spree.Controller
 {

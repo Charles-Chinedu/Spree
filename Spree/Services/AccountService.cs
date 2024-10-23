@@ -2,14 +2,14 @@
 using Microsoft.IdentityModel.Tokens;
 using Spree.Data;
 using Spree.Interface;
-using Spree.Library.Response;
-using Spree.Library.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using static Spree.Library.Response.CustomResponses;
-using Spree.Library.DTOs;
-using Spree.Library.AuthState;
+using static Spree.Libraries.Response.CustomResponses;
+using Spree.Libraries.AuthState;
+using Spree.Libraries.DTOs;
+using Spree.Libraries.Models;
+using Spree.Libraries.Response;
 
 namespace Spree.Services
 {

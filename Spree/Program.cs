@@ -8,7 +8,7 @@ using Spree.Components;
 using Spree.Components.Pages;
 using Spree.Data;
 using Spree.Interface;
-using Spree.Library.AuthState;
+using Spree.Libraries.AuthState;
 using Spree.Services;
 using System.Text;
 

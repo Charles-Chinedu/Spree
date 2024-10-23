@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Spree.Library.Response
+namespace Spree.Libraries.DTOs
 {
     public class RegisterDTO : LoginDTO
     {

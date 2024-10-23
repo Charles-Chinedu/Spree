@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using Spree.Library.Response;
+using Spree.Libraries.Response;
 using System.Security.Claims;
 
-namespace Spree.Library.AuthState
+namespace Spree.Libraries.AuthState
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {

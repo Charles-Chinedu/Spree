@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Spree.Library.Models
+namespace Spree.Libraries.Models
 {
-    public  class Product
+    public class Product
     {
         public int Id { get; set; }
 

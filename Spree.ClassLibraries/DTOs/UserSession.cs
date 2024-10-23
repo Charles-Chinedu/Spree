@@ -1,4 +1,4 @@
-﻿namespace Spree.Library.DTOs
+﻿namespace Spree.Libraries.DTOs
 {
     public class UserSession
     {

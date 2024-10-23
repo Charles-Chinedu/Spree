@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Spree.Library.Models;
+using Spree.Libraries.Models;
 
 namespace Spree.Data
 {

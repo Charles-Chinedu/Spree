@@ -1,4 +1,4 @@
-﻿namespace Spree.Library.AuthState
+﻿namespace Spree.Libraries.AuthState
 {
     public static class Constants
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Spree.Data;
 using Spree.Interface;
-using Spree.Library.Models;
+using Spree.Libraries.Models;
 
 namespace Spree.Services
 {
