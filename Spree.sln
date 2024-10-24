@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spree", "Spree\Spree.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spree.Client", "Spree.Client\Spree.Client.csproj", "{6B879432-E208-443A-8E16-8B76E30B26F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spree.Libraries", "Spree.ClassLibraries\Spree.Libraries.csproj", "{56DD5BF6-3832-4397-AEAA-DB9D4C7A662E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spree.Libraries", "Spree.ClassLibraries\Spree.Libraries.csproj", "{56DD5BF6-3832-4397-AEAA-DB9D4C7A662E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

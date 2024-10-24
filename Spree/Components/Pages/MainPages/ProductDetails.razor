@@ -1,0 +1,23 @@
+﻿@page "/product/{id:int}"
+@rendermode InteractiveServer
+
+<PageTitle>@product.Name</PageTitle>
+
+<section id="pro-details" class="section-p1">
+    <div class="single-pro-image">
+        <img src="@product.ImageUrl" width="100px" height="100px" alt="Clothes"/>
+    </div>
+    <div></div>
+</section>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public Product product = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+         product = await productService.GetProductById(Id);
+    }
+}

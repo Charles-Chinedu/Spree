@@ -14,6 +14,7 @@ namespace Spree.Services
             var products = await _storingData.Products
                 .Include(_ => _.Category)
                 .Where(_ => _.InStock)
+                .OrderByDescending(_ => _.Id)
                 .ToListAsync();
             return products;
         }

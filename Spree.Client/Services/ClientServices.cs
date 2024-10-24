@@ -67,8 +67,13 @@ namespace Spree.Client.Services
                 await GetRefreshToken();
                 return await GetAllCategoriesAsync();
             }
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return new List<Category>();
+            }
+
             var categories = await response.Content.ReadFromJsonAsync<List<Category>>();
-            return categories!;
+            return categories ?? new List<Category>();
         }
 
         public async Task<ServiceResponse> EditCategory(Category model)

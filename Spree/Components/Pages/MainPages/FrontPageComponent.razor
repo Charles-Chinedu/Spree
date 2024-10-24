@@ -1,4 +1,7 @@
-﻿<div class="container-fluid">
+﻿@using Spree.Libraries.Models
+@rendermode InteractiveServer
+
+<div class="container-fluid">
     <section id="hero" class="section">
         <div class="content">
             <img src="images/hero4.png" alt="image" class="bg-image" />
@@ -44,12 +47,12 @@
             <div class="product-list">
                 @foreach (var product in featuredProducts.Take(5))
                 {
-                    <div class="product-item">
-                        <img src="@product.ImageUrl" width="auto" height="350px" style="cursor:pointer"/>
+                    <div class="product-item" @onclick="() => ViewProductDetails(product.Id)">
+                        <img src="@product.ImageUrl" width="auto" height="350px" style="cursor:pointer" />
                         <div class="description"> 
                             <span class="fw-bold">@product.Brand</span>
                             <div class="product-name fw-bold">@product.Name</div>
-                            <h4 class="product-price fw-bold">₦ @product.Price</h4>
+                            <h4 class="product-price fw-bold"> @product.Price.ToString($"₦#,##")</h4>
                         </div>
                         <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
                     </div>
@@ -108,5 +111,10 @@
     protected override async Task OnInitializedAsync()
     {
         featuredProducts = await productService.GetAllProductsAsync();
+    }
+
+    private void ViewProductDetails(int id)
+    {
+        NavManager.NavigateTo($"/product/{id}");
     }
 }

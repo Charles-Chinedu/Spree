@@ -15,7 +15,7 @@ namespace Spree.Controller
             return Ok(products);
         }
 
-        [HttpGet("Single-Product/{producttId}")]
+        [HttpGet("Single-Product/{id}")]
         public async Task<ActionResult<Product>> GetProductByIdAsync(int id)
         {
             var products = await productService.GetProductByIdAsync(id);

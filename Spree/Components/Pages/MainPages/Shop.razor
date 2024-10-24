@@ -1,5 +1,6 @@
 ﻿@page "/shop"
 @using Microsoft.AspNetCore.Components.QuickGrid
+@rendermode InteractiveServer
 
 <section id="page-header">
     <h2>#stayhome</h2>
@@ -10,12 +11,12 @@
     <div class="product-list">
         @foreach (var product in products)
         {
-            <div class="product-item">
+            <div class="product-item" @onclick="() => ViewProductDetails(product.Id)">
                 <img src="@product.ImageUrl" width="auto" height="350px" style="cursor:pointer" />
                 <div class="description">
                     <span class="fw-bold">@product.Brand</span>
                     <div class="product-name fw-bold">@product.Name</div>
-                    <h4 class="product-price fw-bold">₦ @product.Price</h4>
+                    <h4 class="product-price fw-bold">₦ @product.Price.ToString($"#,##")</h4>
                 </div>
                 <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
             </div>
@@ -29,5 +30,10 @@
     protected override async Task OnInitializedAsync()
     {
         products = await productService.GetAllProductsAsync(); 
+    }
+
+    private void ViewProductDetails(int id)
+    {
+        NavManager.NavigateTo($"/product/{id}");
     }
 }
