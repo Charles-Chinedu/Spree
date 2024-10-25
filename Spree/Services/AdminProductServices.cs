@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Spree.Data;
 using Spree.Interface;
+using Spree.Libraries.DTOs;
 using Spree.Libraries.Models;
 using static Spree.Libraries.Response.CustomResponses;
 
@@ -41,12 +42,28 @@ namespace Spree.Services
             return new ServiceResponse(true, "Edited Successsfully");
         }
 
-        public async Task<List<Product>> GetAllProductsAsync()
+        public async Task<List<ProductDTO>> GetAllProductsAsync()
         {
-            var products = await _storingData.Products
+            var productsFromDb = await _storingData.Products
                 .Include(_ => _.Category)
+                .OrderBy(_ => _.Name)
                 .ToListAsync();
-            return products;
+
+            var productsWithSerial = productsFromDb.Select((product, index) => new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Category = product.Category,
+                ImageUrl = product.ImageUrl,
+                Quantity = product.Quantity,
+                InStock = product.InStock,
+                Price = product.Price,
+                Brand = product.Brand,
+
+                SerialNumber = index + 1
+            }).ToList();
+            return productsWithSerial;
         }
 
         public async Task<List<Product>> GetInStockAsync(bool inStock)

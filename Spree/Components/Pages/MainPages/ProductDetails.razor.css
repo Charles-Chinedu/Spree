@@ -1,3 +1,8 @@
-﻿.pro-details {
+﻿#pro-details .single-pro-image {
+    width: 50%;
+    margin-right: 50px;
+}
 
+.section-p1 {
+    padding: 40px 80px;
 }

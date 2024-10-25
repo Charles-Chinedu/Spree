@@ -47,7 +47,7 @@ namespace Spree.Client.Services
             return response!;
         }
 
-        public async Task<List<Product>> GetAllProductsAsync()
+        public async Task<List<ProductDTO>> GetAllProductsAsync()
         {
             GetProtectedClient();
             var response = await _httpClient.GetAsync($"{AdminProductBaseUrl}/All-Products");
@@ -57,7 +57,7 @@ namespace Spree.Client.Services
                 await GetRefreshToken();
                 return await GetAllProductsAsync();
             }
-            var products = await response.Content.ReadFromJsonAsync<List<Product>>();
+            var products = await response.Content.ReadFromJsonAsync<List<ProductDTO>>();
             return products!;
 
         }

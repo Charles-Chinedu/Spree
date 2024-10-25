@@ -1,4 +1,5 @@
-﻿using Spree.Libraries.Models;
+﻿using Spree.Libraries.DTOs;
+using Spree.Libraries.Models;
 using static Spree.Libraries.Response.CustomResponses;
 
 namespace Spree.Client.Services
@@ -9,7 +10,7 @@ namespace Spree.Client.Services
 
         Task<ServiceResponse> EditProductAsync(Product model);
 
-        Task<List<Product>> GetAllProductsAsync();
+        Task<List<ProductDTO>> GetAllProductsAsync();
 
         Task<List<Product>> GetInStockAsync(bool inStock);
 

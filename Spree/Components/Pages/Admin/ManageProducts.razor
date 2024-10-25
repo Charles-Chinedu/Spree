@@ -1,4 +1,5 @@
 ﻿@page "/admin/manage-products"
+@using Spree.Libraries.DTOs
 
 @rendermode InteractiveServer
 
@@ -18,7 +19,7 @@
 
 
 <QuickGrid Items="@products" Pagination="paginationState" class="table table-bordered table-striped table-hover">
-    <PropertyColumn Property="@(c => c.Id)" />
+    <PropertyColumn Property="@(c => c.SerialNumber)" />
         <TemplateColumn>
             <div class="py-2" style="display:grid; grid-template-columns:60px auto; grid-column-gap:5px">
                 <img src="@context.ImageUrl" style="height:60px; width:60px; object-fit:cover"/>
@@ -59,12 +60,14 @@
 </QuickGrid>
 <Paginator State="paginationState" />
 
+<MessageDialog @ref="messageDialog.messageDialog" />
+
 @code {
     private bool isLoading;
     private string? LoadingText;
     private const int PageSize = 5;
     private Category category = new();
-    private IQueryable<Product> products = Enumerable.Empty<Product>().AsQueryable();
+    private IQueryable<ProductDTO> products = Enumerable.Empty<ProductDTO>().AsQueryable();
 
     private PaginationState paginationState = new PaginationState { ItemsPerPage = PageSize };
 

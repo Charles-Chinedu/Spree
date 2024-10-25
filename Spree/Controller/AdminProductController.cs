@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Spree.Interface;
+using Spree.Libraries.DTOs;
 using Spree.Libraries.Models;
 using static Spree.Libraries.Response.CustomResponses;
 
@@ -28,7 +29,7 @@ namespace Spree.Controller
         }
 
         [HttpGet("All-Products")]
-        public async Task<ActionResult<List<Product>>> GetAllProductsAsync()
+        public async Task<ActionResult<List<ProductDTO>>> GetAllProductsAsync()
         {
             var products = await adminProduct.GetAllProductsAsync();
             return Ok(products);
