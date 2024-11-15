@@ -1,13 +1,23 @@
-using Microsoft.AspNetCore.Components.Authorization;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Spree.Client.Pages;
+using Spree.Client.Pages.OtherPages;
 using Spree.Client.Services;
-using Spree.Libraries;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.Services.AddScoped<IProductService, ClientServices>()
-                .AddScoped<ICategoryService, ClientServices>();
+internal class Program
+{
+    private static async Task Main(string[] args)
+    {
+        var builder = WebAssemblyHostBuilder.CreateDefault(args);
+        builder.Services.AddScoped<IProductService, ClientServices>()
+                        .AddScoped<ICategoryService, ClientServices>()
+                        .AddScoped<ICartService, ClientServices>();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7098/") });
+        builder.Services.AddScoped<MessageDialogService>();
 
-await builder.Build().RunAsync();
+        builder.Services.AddBlazoredLocalStorage();
+
+        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7098/") });
+
+        await builder.Build().RunAsync();
+    }
+}

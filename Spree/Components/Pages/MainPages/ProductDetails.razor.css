@@ -1,8 +1,40 @@
-﻿#pro-details .single-pro-image {
-    width: 50%;
+﻿#pro-details {
+    display: flex;
+    margin-top: 20px;
+}
+
+#pro-details .single-pro-image {
+    width: 500px;
     margin-right: 50px;
 }
 
 .section-p1 {
     padding: 40px 80px;
+}
+
+#pro-details.single-pro-details {
+    width: 50%;
+    padding-top: 30px;
+}
+    
+    #pro-details.single-pro-details h4 {
+        padding: 40px 0 20px 0;
+    }
+    
+    #pro-details.single-pro-details h2 {
+        font-size: 26px;
+    }
+
+    #pro-details.single-pro-details input {
+        width: 50px;
+        height: 47px;
+        padding-left: 10px;
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+.single-pro-details button:hover {
+    background: #aeabd9;
+    border: 2px solid #aeabd9;
+    color: white;
 }

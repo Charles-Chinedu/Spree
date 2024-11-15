@@ -22,9 +22,13 @@
 @using Spree.Components.Pages.OtherPages
 @using Spree.Components.Pages.MainPages
 @using Spree.Libraries.Models
+@using Spree.Client.PrivateModel
+@using Spree.Client.Pages.CartPages
+
 
 @inject IAccountService accountService
 @inject IProductService productService
+@inject ICartService cartService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IJSRuntime js
 @inject NavigationManager NavManager

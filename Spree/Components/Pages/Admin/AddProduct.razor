@@ -23,15 +23,15 @@
             <DataAnnotationsValidator />
             <div class="shadow p-3" style="display:grid; grid-template-columns:auto 150px; grid-column-gap:15px">
                 <div>
-                    <label class="form-label">Add Category</label>
+                    <label class="form-label">Add Product</label>
                     <div class="form-group mt-3">
                         <label class="form-label">Name</label>
-                        <InputText @bind-Value="model.Name" class="form-control form-control-sm" placeholder="Category Name" />
+                        <InputText @bind-Value="model.Name" class="form-control form-control-sm" placeholder="Product Name" />
                         <ValidationMessage For="() => model.Name" class="text-danger" />
                     </div>
                     <div class="form-group mt-3">
                         <label class="form-label">Category</label>
-                        <InputSelect @bind-Value="model.CategoryId" class="form-control form-control-sm" placeholder="Brand Name">
+                        <InputSelect @bind-Value="model.CategoryId" class="form-control form-control-sm" placeholder="Category">
                             <option value="0">Select Category</option>
                             @foreach (var item in categories)
                             {
@@ -53,12 +53,12 @@
                     </div>
                     <div class="form-group mt-3">
                         <label class="form-label">Price</label>
-                        <InputNumber @bind-Value="model.Price" class="form-control form-control-sm" placeholder="Category Name" />
+                        <InputNumber @bind-Value="model.Price" class="form-control form-control-sm" placeholder="Price" />
                         <ValidationMessage For="() => model.Price" class="text-danger" />
                     </div>
                     <div class="form-group mt-3">
                         <label class="form-label">Quantity</label>
-                        <InputNumber @bind-Value="model.Quantity" class="form-control form-control-sm" placeholder="Category Name" />
+                        <InputNumber @bind-Value="model.Quantity" class="form-control form-control-sm" placeholder="Quantity" />
                         <ValidationMessage For="() => model.Quantity" class="text-danger" />
                     </div>
                     <div class="form-group mt-3">

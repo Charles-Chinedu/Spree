@@ -10,7 +10,7 @@
                 <h2 class="fw-bold">Super value deals</h2>
                 <h1 class="fw-bold">On all products</h1>
                 <p>Save more with coupons & up to 70% off!</p>
-                <button class="btn">Shop Now!</button>
+                <button class="btn" @onclick="GoToShop">Shop Now!</button>
             </div>
         </div>
     </section>
@@ -116,5 +116,10 @@
     private void ViewProductDetails(int id)
     {
         NavManager.NavigateTo($"/product/{id}");
+    }
+
+    private void GoToShop()
+    {
+        NavManager.NavigateTo("/shop");
     }
 }

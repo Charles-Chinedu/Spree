@@ -1,11 +1,12 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Spree.Client.Pages.OtherPages;
 using Spree.Client.Services;
 using Spree.Components;
-using Spree.Components.Pages;
 using Spree.Data;
 using Spree.Interface;
 using Spree.Libraries.AuthState;
@@ -20,6 +21,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSwaggerGen(swagger =>
 {
     //This is to generate the default UI of swagger Documentation
@@ -92,8 +94,11 @@ builder.Services.AddScoped<MessageDialogService>();
 builder.Services.AddScoped<IAccountService, ClientServices>()
                 .AddScoped<ICategoryService, ClientServices>()
                 .AddScoped<IProductService, ClientServices>()
+                .AddScoped<ICartService, ClientServices>()
                 .AddScoped<IAdminProductService, AdminClientService>();
-                
+
+builder.Services.AddBlazoredLocalStorage();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

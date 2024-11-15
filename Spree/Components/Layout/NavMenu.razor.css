@@ -111,15 +111,7 @@
 
 /*Icons*/
 
-svg {
-    fill: var(--primary-color);
-    width: 20px;
-}
 
-    svg:hover {
-        fill: #b1aee6;
-
-    }
 
 
 .nav-scrollable {

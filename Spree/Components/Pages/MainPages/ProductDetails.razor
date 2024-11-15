@@ -10,33 +10,63 @@
     <div class="single-pro-details">
         <h6>Home / T-Shirt</h6>
         <h4>Men's Fashion T-Shirt</h4>
-        <h2>@product.Price.ToString($"#,##")</h2>
-        <div>
-            <strong>Available Stock:</strong>@product.InStock
-        </div>
-       
-        <label for="quantity">Quantity</label>
-        <InputNumber id="quantity" @bind-Value="product.Quantity" min="1" max="@product.Quantity"></InputNumber>
-        
+        <h2>@product.Price.ToString($"₦#,##")</h2>
+        @if (product.Quantity <= 5)
+        {
+            <div>
+                <strong>Available Stock:</strong>@product.Quantity
+            </div>
+        }
+        @if (showBox)
+        {
+            <div class="input">
+                <label for="quantity">Quantity</label>
+                <InputNumber id="quantity" @bind-Value="selectedQuantity" min="1" max="@product.Quantity"></InputNumber>
+            </div>
+        }
         @* Add to Cart *@
-        <button class="btn btn-primary mt-3" @onclick="AddToCart" disabled="@(product.Quantity > 1 || product.Quantity <= 0)">Add to Cart</button>
+        <button class="normal mb-3" @onclick="AddToCart">Add to Cart</button>
+        <div>
+            <h4>Product Details</h4>
+            <span>
+                @product.Description
+            </span>
+        </div>
     </div>
-    <div></div>
 </section>
+<MessageDialog @ref="messageDialogService.messageDialog"/>
 
 @code {
     [Parameter]
     public int Id { get; set; } 
 
     public Product product = new();
+    private bool showBox = false;
+    private int selectedQuantity = 1;
 
     protected override async Task OnInitializedAsync()
     {
         product = await productService.GetProductById(Id);
     }
 
-    private void AddToCart()
+    private async Task AddToCart()
     {
-        
+        showBox = true;
+        if (product is null || selectedQuantity < 1) return;
+        // product.Quantity -= selectedQuantity;
+        DisplayResponse(await cartService.AddToCart(product, selectedQuantity, isAdding: true));
+    }
+
+    private void DisplayResponse(ServiceResponse serviceResponse)
+    {
+        if (serviceResponse.Flag)
+        {
+            messageDialogService.messageDialog!.SetDialogValues("success", serviceResponse.Message);
+        }
+        else
+        {
+            messageDialogService.messageDialog!.SetDialogValues("danger", serviceResponse.Message);
+        }
+        messageDialogService.SetMessageDialog();
     }
 }

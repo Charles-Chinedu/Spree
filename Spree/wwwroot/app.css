@@ -28,6 +28,20 @@ h1:focus {
     border-color: #929292;
 }
 
+button.normal {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 30px;
+    color: #000;
+    background-color: transparent;
+    border: 2px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.2s;
+}
+
+
 /*Footer*/
 
 #footer {

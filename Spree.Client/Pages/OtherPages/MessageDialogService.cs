@@ -1,6 +1,4 @@
-﻿using Spree.Components.Pages.OtherPages;
-
-namespace Spree.Components.Pages
+﻿namespace Spree.Client.Pages.OtherPages
 {
     public class MessageDialogService
     {
@@ -17,7 +15,7 @@ namespace Spree.Components.Pages
                 ShowBusyButton = false;
                 ShowSaveButton = !ShowBusyButton;
                 Action?.Invoke();
-            }            
+            }
         }
     }
 }

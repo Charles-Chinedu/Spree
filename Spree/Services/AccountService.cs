@@ -103,11 +103,12 @@ namespace Spree.Services
                 new Claim(ClaimTypes.Email, user.Email!),
                 new Claim(ClaimTypes.Role, user.Role!)
             };
+
             var token = new JwtSecurityToken(
                 issuer: config["Jwt:Issuer"]!,
                 audience: config["Jwt:Audience"]!,
                 claims: userClaims,
-                expires: DateTime.Now.AddMinutes(2),
+                expires: DateTime.Now.AddHours(1),
                 signingCredentials: credentials
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);

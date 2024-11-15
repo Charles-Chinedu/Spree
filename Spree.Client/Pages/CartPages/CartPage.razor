@@ -1,0 +1,112 @@
+﻿@page "/cart"
+@implements IDisposable
+@rendermode @(new InteractiveAutoRenderMode(prerender: false))
+
+<section id="page-header">
+    <h2>#cart</h2>
+</section>
+
+@if (myCartOrders is not null)
+{
+    int count = 1;
+    <section id="cart" class="section-p1">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <td>Remove</td>
+                    <td>S/N</td>
+                    <td>Image</td>
+                    <td>Product</td>
+                    <td>Quantity</td>
+                    <td>Price</td>
+                    <td>Subtotal</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in myCartOrders)
+                {
+                    <tr>
+                        <td><a class="icon" @onclick="() => Delete(order)" style="cursor:pointer"><i class=" fa-regular fa-circle-xmark text-danger" width="20px" height="auto"></i></a></td>
+                        <td>@count</td>
+                        <td><img src="@order.Image" width="100px"/></td>
+                        <td>@order.Name</td>
+                        <td><input type="number" min="1" class="form-control w-25" value="@order.Quantity"
+                            @onchange="@(e => HandleChange(e, order))" /></td>
+                        <td>@order.Price.ToString($"₦#,##")</td>
+                        <td>@order.SubTotal.ToString($"₦#,##")</td>
+                    </tr>
+                    count++;
+                }
+            </tbody>
+        </table>
+    </section>
+}
+else
+{
+    <h1>Nothing in your cart.</h1>
+}
+
+<MessageDialog @ref="messageDialogService.messageDialog" />
+
+@code {
+    List<Order> myCartOrders = new();
+    protected async override Task OnInitializedAsync()
+    {
+        myCartOrders = await cartService.MyOrder();
+        messageDialogService.Action += StateHasChanged;   
+    }
+
+    async Task HandleChange(ChangeEventArgs e, Order order)
+    {
+        // Ensure the input value is valid
+        int newQuantity;
+        if (!int.TryParse(e.Value!.ToString()!, out newQuantity) || newQuantity <= 0) return;
+
+        // Find the current order item in the cart by ID
+        var getOrder = myCartOrders.FirstOrDefault(_ => _.Id == order.Id);
+        if (getOrder == null) return;  // Exit if order not found in cart
+
+        int oldQuantity = getOrder.Quantity;
+        getOrder.Quantity = newQuantity;
+
+        // Calculate the quantity difference
+        int quantityDifference = Math.Abs(newQuantity - oldQuantity);
+        bool isAdding = newQuantity > oldQuantity;
+
+        // Fetch the product details from the product service
+        var product = await productService.GetProductById(order.Id);
+        if (product == null)
+        {
+            DisplayResponse(new ServiceResponse(false, "Product not found."));
+            return;
+        }
+
+        // Call AddToCart with the quantity difference and isAdding flag
+        var response = await cartService.AddToCart(product, quantityDifference, isAdding);
+
+        // Display the response message
+        DisplayResponse(response);
+    }
+
+    async Task Delete(Order cart)
+    {
+        bool confirm = await js.InvokeAsync<bool>("confirm", "Are you sure you want to delete this from cart?");
+        if (!confirm) return;
+        myCartOrders.Remove(myCartOrders.FirstOrDefault(_ => _.Id == cart.Id)!);
+        DisplayResponse(await cartService.DeleteCart(cart));
+    }
+
+    private void DisplayResponse(ServiceResponse serviceResponse)
+    {
+        if (serviceResponse.Flag)
+            messageDialogService.messageDialog!.SetDialogValues("success", serviceResponse.Message);
+        else
+            messageDialogService.messageDialog!.SetDialogValues("warning", serviceResponse.Message);
+        messageDialogService.SetMessageDialog();
+    }
+
+    public void Dispose()
+    {
+        messageDialogService.Action -= StateHasChanged;
+    }
+}

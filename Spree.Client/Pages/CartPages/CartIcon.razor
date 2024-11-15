@@ -1,0 +1,50 @@
+﻿@implements IDisposable
+@rendermode @(new InteractiveAutoRenderMode(prerender: false))
+
+<a class="navbar-cart cart-body" @onclick="CartPage" style="cursor:pointer">
+    <i class="fa-solid fa-cart-shopping cart"></i>
+    <span class="small text-primary fw-bold cart-info">@cartService.CartCount</span>
+</a>
+
+<style>
+    .cart {
+        color: #1a1a1a;
+        width: 20px;
+    }
+
+        .cart:hover {
+            color: #b1aee6;
+        }
+
+    .cart-body {
+        position: relative; /* This sets the context for absolute positioning */
+    }
+
+    .cart-info {
+        position: absolute; 
+        top: 2px; 
+        right: 0; 
+        transform: translate(50%, -50%); /* Moves the count slightly to the right and up */
+        padding: 0.2em 0.5em; 
+        font-size: 0.75em; 
+        color: #b1aee6;
+    }
+</style>
+
+@code {
+    protected async override Task OnInitializedAsync()
+    {
+        await cartService.GetCartCount();
+        cartService.CartAction += StateHasChanged;
+    }
+
+    void CartPage()
+    {
+        NavManager.NavigateTo("/cart");
+    }
+
+    public void Dispose()
+    {
+        cartService.CartAction -= StateHasChanged;
+    }
+}
