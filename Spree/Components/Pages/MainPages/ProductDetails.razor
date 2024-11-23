@@ -1,5 +1,5 @@
 ﻿@page "/product/{id:int}"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 
 <PageTitle>@product.Name</PageTitle>
 
@@ -43,10 +43,21 @@
     public Product product = new();
     private bool showBox = false;
     private int selectedQuantity = 1;
+    private bool isFirstRender = true;
+
 
     protected override async Task OnInitializedAsync()
     {
         product = await productService.GetProductById(Id);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && isFirstRender)
+        {
+            await js.InvokeVoidAsync("scrollToTop");
+            isFirstRender = false;
+        }
     }
 
     private async Task AddToCart()

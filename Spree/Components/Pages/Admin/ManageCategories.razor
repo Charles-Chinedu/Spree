@@ -23,12 +23,12 @@
         <div class="col-md-6">
             <EditForm Model="model" OnValidSubmit="SaveCategoryAsync">
                 <DataAnnotationsValidator />
-                <div class="shadow p-3" style="display:grid; grid-template-columns:auto 150px; grid-column-gap:15px">
+                <div class="shadow p-3" style="display:grid; grid-template-rows:auto 50px 10px; row-gap:15px">
                     <div>
                         <label class="form-label">Add Category</label>
                         <div class="form-group mt-3">
                             <label class="form-label">Name</label>
-                            <InputText @bind-Value="model.Name" class="form-control form-control-sm" placeholder="Category Name" />
+                            <InputText @bind-Value="model.Name" class="form-control form-control-sm" style="max-width: 300px" placeholder="Category Name" />
                             <ValidationMessage For="() => model.Name" />
                         </div>
                         <div class="form-group mt-3">
@@ -36,8 +36,8 @@
                             <InputFile OnChange="HandleFileUploadAsync" />
                         </div>
                     </div>
-                    <div class="d-flex justify-content-start gap-2 mt-2">
-                        <button type="submit" class="btn btn-sm btn-success" @onclick="() => SaveCategoryAsync()"><i class="fa fa-plus"></i>Save</button>
+                    <div class="d-flex gap-2 mt-2 justify-content-start align-items-center">
+                        <button type="submit" class="btn btn-sm btn-success" @onclick="() => SaveCategoryAsync()"><i class="fa fa-plus"></i> <span>Save</span></button>
                         <button type="button" class="btn btn-sm btn-danger" @onclick="() => model = null">Cancel</button>
                     </div>
                 </div>

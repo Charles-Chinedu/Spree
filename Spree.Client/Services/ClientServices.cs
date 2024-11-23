@@ -14,7 +14,6 @@ namespace Spree.Client.Services
 {
     public class ClientServices(HttpClient httpClient, ILocalStorageService localStorageService) : IProductService, ICategoryService, IAccountService, ICartService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly HttpClient _httpClient = httpClient;
         private readonly ILocalStorageService _localStorage = localStorageService;
 
