@@ -1,4 +1,6 @@
-﻿namespace Spree.Client.PrivateModel
+﻿using Spree.Libraries.Models;
+
+namespace Spree.Client.PrivateModel
 {
     public class Order
     {
@@ -8,5 +10,7 @@
         public int Quantity { get; set; }
         public string? Image { get; set; }
         public decimal SubTotal => Quantity * Price;
+        public DateTime OrderDate { get; set; }
+        public Product ProductId { get; set; }
     }
 }

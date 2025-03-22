@@ -2,8 +2,10 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
 using Spree.Client.Pages.OtherPages;
 using Spree.Client.Services;
 using Spree.Components;
@@ -21,40 +23,41 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSwaggerGen(swagger =>
-{
-    //This is to generate the default UI of swagger Documentation
-    swagger.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Version = "v1",
-        Title = "Asp.NET 8 Web API",
-        Description = "Authentication with JWT"
-    });
-    //To enable Authorization 
-    swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-    });
-    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
-{
-    {
-        new OpenApiSecurityScheme
-        {
-            Reference = new OpenApiReference
-            {
-                Type = ReferenceType.SecurityScheme,
-                Id = "Bearer"
-            }
-        },Array.Empty<string>()
-    }
-    });
+//builder.Services.AddSwaggerGen(swagger =>
+//{
+//    //This is to generate the default UI of swagger Documentation
+//    swagger.SwaggerDoc("v1", new OpenApiInfo
+//    {
+//        Version = "v1",
+//        Title = "Asp.NET 8 Web API",
+//        Description = "Authentication with JWT"
+//    });
+//    //To enable Authorization 
+//    swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+//    {
+//        Name = "Authorization",
+//        Type = SecuritySchemeType.ApiKey,
+//        Scheme = "Bearer",
+//        BearerFormat = "JWT",
+//        In = ParameterLocation.Header,
+//    });
+//    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
+//{
+//    {
+//        new OpenApiSecurityScheme
+//        {
+//            Reference = new OpenApiReference
+//            {
+//                Type = ReferenceType.SecurityScheme,
+//                Id = "Bearer"
+//            }
+//        },Array.Empty<string>()
+//    }
+//    });
 
-});
+//});
 
 builder.Services.AddDbContext<StoringData>(options =>
 {
@@ -98,13 +101,14 @@ builder.Services.AddScoped<IAccountService, ClientServices>()
                 .AddScoped<IAdminProductService, AdminClientService>();
 
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+    app.MapOpenApi();
 }
 else
 {
@@ -113,15 +117,17 @@ else
     app.UseHsts();
 }
 
+app.MapScalarApiReference(); // scalar/v1
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
-app.UseSwagger();
-app.UseSwaggerUI(s =>
-{
-    s.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API Name V1");
-});
+//app.UseSwagger();
+//app.UseSwaggerUI(s =>
+//{
+//    s.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API Name V1");
+//});
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
