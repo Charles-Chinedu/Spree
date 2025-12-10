@@ -67,21 +67,22 @@ namespace Spree.Client.Services
 
         public async Task<List<Category>> GetAllCategoriesAsync()
         {
-            GetProtectedClient();
-            var response = await _httpClient.GetAsync($"{CategoryBaseUrl}/All-Categories");
-            bool unauthorized = CheckIfUnauthorized(response);
-            if (unauthorized)
+            try
             {
-                await GetRefreshToken();
-                return await GetAllCategoriesAsync();
+                GetProtectedClient();
+                var response = await _httpClient.GetAsync($"{CategoryBaseUrl}/All-Categories");
+                bool unauthorized = CheckIfUnauthorized(response);
+                if (unauthorized)
+                {
+                    await GetRefreshToken();
+                    return await GetAllCategoriesAsync();
+                }
+                return await response.Content.ReadFromJsonAsync<List<Category>>() ?? new List<Category>();
             }
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            catch
             {
                 return new List<Category>();
             }
-
-            var categories = await response.Content.ReadFromJsonAsync<List<Category>>();
-            return categories ?? new List<Category>();
         }
 
         public async Task<ServiceResponse> EditCategory(Category model)
@@ -123,7 +124,7 @@ namespace Spree.Client.Services
         {
             if (Constants.JWToken == "") return;
 
-            _httpClient.DefaultRequestHeaders.Authorization = 
+            _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", Constants.JWToken);
         }
 
@@ -146,7 +147,7 @@ namespace Spree.Client.Services
                 Constants.JWToken = apiResponse.JWToken;
                 await MergeCartWithDatabase();
             }
-            return apiResponse!; 
+            return apiResponse!;
         }
 
         private async Task MergeCartWithDatabase()
@@ -185,7 +186,7 @@ namespace Spree.Client.Services
             else
                 CartCount = JsonSerializer.Deserialize<IList<CartStorage>>(cartString)!.Count;
             CartAction?.Invoke();
-            
+
         }
         public async Task<ServiceResponse> AddToCart(Product model, int updateQuantity, bool isAdding)
         {
@@ -283,7 +284,7 @@ namespace Spree.Client.Services
             foreach (var cartItem in myCartList!)
             {
                 var product = await GetProductById(cartItem.ProductId);
-                if (product == null) 
+                if (product == null)
                     continue;
                 cartList.Add(new Order
                 {
